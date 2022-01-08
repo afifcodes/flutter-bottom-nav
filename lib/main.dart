@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bottom_nav/utils/system_ui.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
@@ -81,7 +80,6 @@ class _MyAppState extends State<MyApp> {
   //////////////////////////////
   @override
   Widget build(BuildContext context) {
-    systemUi();
     return PersistentTabView(context,
         backgroundColor: Colors.white,
         controller: _controller,
