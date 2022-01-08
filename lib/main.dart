@@ -1,115 +1,268 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bottom_nav/utils/system_ui.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: MyApp(),
+    ));
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late PersistentTabController _controller;
+
+  List<Widget> _buildScreens() {
+    return [
+      MainScreen(),
+      SearchScreen(),
+      AddScreen(),
+      MessageScreen(),
+      SettingScreen(),
+    ];
+  }
+
+  List<PersistentBottomNavBarItem> _navBarsItems() {
+    return [
+      PersistentBottomNavBarItem(
+          icon: const Icon(Icons.home),
+          title: 'Home',
+          textStyle: GoogleFonts.inter(fontWeight: FontWeight.w500),
+          activeColorPrimary: Colors.red,
+          inactiveColorPrimary: Colors.grey,
+          activeColorSecondary: Colors.white),
+      PersistentBottomNavBarItem(
+          icon: const Icon(Icons.search),
+          title: 'Search',
+          textStyle: GoogleFonts.inter(fontWeight: FontWeight.w500),
+          activeColorPrimary: Colors.green,
+          inactiveColorPrimary: Colors.grey,
+          activeColorSecondary: Colors.white),
+      PersistentBottomNavBarItem(
+          icon: const Icon(Icons.add),
+          title: 'Add',
+          textStyle: GoogleFonts.inter(fontWeight: FontWeight.w500),
+          activeColorPrimary: Colors.blue,
+          inactiveColorPrimary: Colors.grey,
+          activeColorSecondary: Colors.white),
+      PersistentBottomNavBarItem(
+          icon: const Icon(Icons.message),
+          title: 'Message',
+          textStyle: GoogleFonts.inter(fontWeight: FontWeight.w500),
+          activeColorPrimary: Colors.purple,
+          inactiveColorPrimary: Colors.grey,
+          activeColorSecondary: Colors.white),
+      PersistentBottomNavBarItem(
+          icon: const Icon(Icons.settings),
+          title: 'Settings',
+          textStyle: GoogleFonts.inter(fontWeight: FontWeight.w500),
+          activeColorPrimary: Colors.orange,
+          inactiveColorPrimary: Colors.grey,
+          activeColorSecondary: Colors.white),
+    ];
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = PersistentTabController(initialIndex: 0);
+  }
+
+  //////////////////////////////
+  /// @withflutter
+  ///
+  /// afifudin.vercel.app
+  //////////////////////////////
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
+    systemUi();
+    return PersistentTabView(context,
+        backgroundColor: Colors.white,
+        controller: _controller,
+        screens: _buildScreens(),
+        items: _navBarsItems(),
+        confineInSafeArea: true,
+        decoration: NavBarDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          colorBehindNavBar: Colors.white,
+        ),
+        popAllScreensOnTapOfSelectedTab: true,
+        popActionScreens: PopActionScreensType.all,
+        itemAnimationProperties: const ItemAnimationProperties(
+          duration: Duration(milliseconds: 200),
+          curve: Curves.ease,
+        ),
+        screenTransitionAnimation: const ScreenTransitionAnimation(
+          animateTabTransition: true,
+          curve: Curves.ease,
+          duration: Duration(milliseconds: 200),
+        ),
+        navBarStyle: NavBarStyle.style10);
+  }
+}
+
+class MainScreen extends StatefulWidget {
+  const MainScreen({Key? key}) : super(key: key);
+
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.red,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Icon(
+            Icons.home,
+            size: 200,
+            color: Colors.white,
+          ),
+          Text('Hello From Home',
+              style: GoogleFonts.inter(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 24,
+                  color: Colors.white))
+        ],
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+class SearchScreen extends StatefulWidget {
+  const SearchScreen({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _SearchScreenState createState() => _SearchScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
+class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+    return Container(
+      color: Colors.green,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Icon(
+            Icons.search,
+            size: 200,
+            color: Colors.white,
+          ),
+          Text('Searching Page',
+              style: GoogleFonts.inter(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 24,
+                  color: Colors.white))
+        ],
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
+    );
+  }
+}
+
+class AddScreen extends StatefulWidget {
+  const AddScreen({Key? key}) : super(key: key);
+
+  @override
+  _AddScreenState createState() => _AddScreenState();
+}
+
+class _AddScreenState extends State<AddScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.blue,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Icon(
+            Icons.add,
+            size: 200,
+            color: Colors.white,
+          ),
+          Text('Add Page',
+              style: GoogleFonts.inter(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 24,
+                  color: Colors.white))
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class MessageScreen extends StatefulWidget {
+  const MessageScreen({Key? key}) : super(key: key);
+
+  @override
+  _MessageScreenState createState() => _MessageScreenState();
+}
+
+class _MessageScreenState extends State<MessageScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.purple,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Icon(
+            Icons.message,
+            size: 200,
+            color: Colors.white,
+          ),
+          Text('Message in here',
+              style: GoogleFonts.inter(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 24,
+                  color: Colors.white))
+        ],
+      ),
+    );
+  }
+}
+
+class SettingScreen extends StatefulWidget {
+  const SettingScreen({Key? key}) : super(key: key);
+
+  @override
+  _SettingScreenState createState() => _SettingScreenState();
+}
+
+class _SettingScreenState extends State<SettingScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.orange,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Icon(
+            Icons.settings,
+            size: 200,
+            color: Colors.white,
+          ),
+          Text('This is Settings',
+              style: GoogleFonts.inter(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 24,
+                  color: Colors.white))
+        ],
+      ),
     );
   }
 }
